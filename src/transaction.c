@@ -4,7 +4,7 @@
 #include "include/transaction.h"
 #include "include/file.h"
 
-void transaction(char mode, float amount, char place[32])
+void transaction(char* filename, char mode, float amount, char place[32])
 {
 	char line[512];
 	time_t t = time(NULL);
@@ -18,7 +18,8 @@ void transaction(char mode, float amount, char place[32])
 		local_time->tm_mon + 1,
 		local_time->tm_year + 1900,
 		amount,
-		place);
+		place
+	);
 
-	write_file("test.txt", line, 0);
+	write_file(filename, line, 0);
 }

@@ -5,6 +5,9 @@
 #include "include/about.h"
 #include "include/status.h"
 #include "include/transaction.h"
+#include "include/file.h"
+
+char* global_file = "test.txt";
 
 int main(int argc, char **argv)
 {
@@ -27,11 +30,15 @@ int main(int argc, char **argv)
 			}
 			else if (strcmp(argv[i], "add-inc") == 0)
 			{
-				transaction('I', strtof(argv[i + 1], NULL), argv[i + 2]);
+				transaction(global_file, 'I', strtof(argv[i + 1], NULL), argv[i + 2]);
 			}
 			else if (strcmp(argv[i], "add-exp") == 0)
 			{
-				transaction('E', strtof(argv[i + 1], NULL), argv[i + 2]);
+				transaction(global_file, 'E', strtof(argv[i + 1], NULL), argv[i + 2]);
+			}
+			else if (strcmp(argv[i], "show") == 0)
+			{
+				read_file(global_file);
 			}
 		}
 	}

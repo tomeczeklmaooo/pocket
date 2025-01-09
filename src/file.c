@@ -30,8 +30,25 @@ int write_file(char* filename, char* content, int overwrite_content)
 // read from a file
 // this should probably write each line to a dynamically sized array
 // and then parse each line to write on screen (maybe idk)
-char* read_file(char* filename)
+void read_file(char* filename)
 {
-	// TODO, for now returning an empty string so the compiler doesn't cry
-	return "";
+	FILE *fptr;
+
+	fptr = fopen(filename, "r");
+
+	char line_content[128];
+
+	if (fptr != NULL)
+	{
+		while (fgets(line_content, sizeof(line_content), fptr))
+		{
+			printf("%s", line_content);
+		}
+	}
+	else
+	{
+		printf("ERROR: Unable to open file '%s'\n", filename);
+	}
+
+	fclose(fptr);
 }
