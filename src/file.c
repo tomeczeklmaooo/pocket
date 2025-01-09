@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "include/file.h"
+
+char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
 
 // write to a file
 int write_file(char* filename, char* content, int overwrite_content)
@@ -36,13 +39,19 @@ void read_file(char* filename)
 
 	fptr = fopen(filename, "r");
 
-	char line_content[128];
-
 	if (fptr != NULL)
 	{
-		while (fgets(line_content, sizeof(line_content), fptr))
+		int i = 0;
+		while (fgets(file_content[i], sizeof(file_content[i]), fptr))
 		{
-			printf("%s", line_content);
+			// removing newline character, don't think this should be used tbh
+			// file_content[i][strcspn(file_content[i], "\n")] = '\0';
+			i++;
+
+			if (i >= MAX_FILE_LINE_AMT)
+			{
+				printf("ERROR: Reached line limit of %d", MAX_FILE_LINE_AMT);
+			}
 		}
 	}
 	else

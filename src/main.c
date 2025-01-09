@@ -39,6 +39,10 @@ int main(int argc, char **argv)
 			else if (strcmp(argv[i], "show") == 0)
 			{
 				read_file(global_file);
+				for (int i = 0; i < MAX_FILE_LINE_AMT; i++)
+				{
+					printf("%s", file_content[i]);
+				}
 			}
 		}
 	}

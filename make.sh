@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc src/*.c -o bin/pocket -Wall -Werror -std=c23
+gcc src/*.c -o bin/pocket -Wall -Werror -Wextra -std=c23
