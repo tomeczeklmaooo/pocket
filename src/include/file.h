@@ -9,5 +9,6 @@ extern char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
 
 int write_file(char* filename, char* content, int overwrite_content);
 void read_file(char* filename);
+int get_line_count(char* filename);
 
 #endif

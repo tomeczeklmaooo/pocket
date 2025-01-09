@@ -61,3 +61,32 @@ void read_file(char* filename)
 
 	fclose(fptr);
 }
+
+// it's literally the file reading function, but instead of writing to array, we're counting lines
+int get_line_count(char* filename)
+{
+	FILE *fptr;
+	int line_count = 0;
+	char c;
+
+	fptr = fopen(filename, "r");
+
+	if (fptr != NULL)
+	{
+		while ((c = fgetc(fptr)) != EOF)
+		{
+			if (c == '\n')
+			{
+				line_count++;
+			}
+		}
+	}
+	else
+	{
+		printf("ERROR: Unable to open file '%s'\n", filename);
+	}
+
+	fclose(fptr);
+
+	return line_count;
+}
