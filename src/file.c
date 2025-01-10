@@ -3,6 +3,9 @@
 
 #include "include/file.h"
 
+// change to whatever
+char* global_file = "test.txt";
+
 char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
 
 // write to a file
@@ -19,12 +22,19 @@ int write_file(char* filename, char* content, int overwrite_content)
 			fptr = fopen(filename, "w");
 			break;
 		default:
-			printf("ERROR: Invalid write_file() overwrite_content argument value!\n");
+			printf("ERROR [write_file()]: Invalid overwrite_content argument value!\n");
 			printf("Expected 0 or 1, actual value: %d\n", overwrite_content);
 			return 1;
 	}
 
-	fprintf(fptr, content);
+	if (fptr != NULL)
+	{
+		fprintf(fptr, content);
+	}
+	else
+	{
+		printf("ERROR [write_file()]: Unable to open file '%s'\n", filename);
+	}
 
 	fclose(fptr);
 	return 0;
@@ -56,7 +66,7 @@ void read_file(char* filename)
 	}
 	else
 	{
-		printf("ERROR: Unable to open file '%s'\n", filename);
+		printf("ERROR [read_file()]: Unable to open file '%s'\n", filename);
 	}
 
 	fclose(fptr);
@@ -83,7 +93,7 @@ int get_line_count(char* filename)
 	}
 	else
 	{
-		printf("ERROR: Unable to open file '%s'\n", filename);
+		printf("ERROR [get_line_count()]: Unable to open file '%s'\n", filename);
 	}
 
 	fclose(fptr);

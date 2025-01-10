@@ -8,11 +8,12 @@
 #include "include/file.h"
 #include "include/parse.h"
 
-// change to whatever
-char* global_file = "test.txt";
-
 int main(int argc, char **argv)
 {
+	// reading float values from the file on program load
+	// is it really needed? i don't know
+	get_values_from_array();
+
 	if (argc == 1)
 	{
 		printf("No arguments: exiting...\n");
