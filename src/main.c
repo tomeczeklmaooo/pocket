@@ -10,10 +10,10 @@
 
 int main(int argc, char **argv)
 {
-	// reading float values from the file on program load
-	// is it really needed? i don't know
-	get_values_from_array();
+	// functions to run always
+	generate_filename("", "_list");
 
+	// args
 	if (argc == 1)
 	{
 		printf("No arguments: exiting...\n");
@@ -29,6 +29,7 @@ int main(int argc, char **argv)
 			}
 			else if (strcmp(argv[i], "status") == 0)
 			{
+				get_values_from_array(); // reading float values from the file
 				status();
 			}
 			else if (strcmp(argv[i], "add-inc") == 0)

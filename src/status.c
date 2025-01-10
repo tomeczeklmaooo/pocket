@@ -37,6 +37,6 @@ void status()
 	}
 	else if (difference > 0.0f)
 	{
-		printf("\033[0;32m%.2f\033[0m\n", difference);
+		printf("\033[0;32m+%.2f\033[0m\n", difference);
 	}
 }

@@ -1,10 +1,26 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "include/file.h"
 
 // change to whatever
-char* global_file = "test.txt";
+char global_file[128];
+
+void generate_filename(char* prefix, char* suffix)
+{
+	time_t t = time(NULL);
+	struct tm *local_time = localtime(&t);
+
+	snprintf(
+		global_file,
+		sizeof(global_file),
+		"%s%04d%s.txt",
+		prefix,
+		local_time->tm_year + 1900,
+		suffix
+	);
+}
 
 char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
 
