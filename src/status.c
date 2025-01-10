@@ -17,10 +17,26 @@ void status()
 		expense_sum += expense_table[i];
 	}
 
-	printf("Total income sum: %.2f\n", income_sum);
-	printf("Total expense sum: %.2f\n", expense_sum);
+	printf(
+		"Total income sum: %.2f (in %d entries)\n",
+		income_sum,
+		income_table_act_size
+	);
+	printf(
+		"Total expense sum: %.2f (in %d entries)\n",
+		expense_sum,
+		expense_table_act_size
+	);
 
 	float difference = income_sum - expense_sum;
 
-	printf("Difference: %.2f\n", difference);
+	printf("Difference: ");
+	if (difference < 0.0f)
+	{
+		printf("\033[0;31m%.2f\033[0m\n", difference);
+	}
+	else if (difference > 0.0f)
+	{
+		printf("\033[0;32m%.2f\033[0m\n", difference);
+	}
 }
