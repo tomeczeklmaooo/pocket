@@ -6,7 +6,7 @@
 #include "include/status.h"
 #include "include/transaction.h"
 #include "include/file.h"
-#include "include/parse.h"
+#include "include/show.h"
 
 int main(int argc, char **argv)
 {
@@ -41,18 +41,7 @@ int main(int argc, char **argv)
 			}
 			else if (strcmp(argv[i], "show") == 0)
 			{
-				read_file(global_file);
-				for (int i = 0; i < get_line_count(global_file); i++)
-				{
-					parse_line(file_content[i]);
-
-					for (int j = 0; j < 4; j++)
-					{
-						printf("%s ", line_parsed[j]);
-					}
-
-					printf("\n"); // new line at end of each line
-				}
+				show();
 			}
 		}
 	}
