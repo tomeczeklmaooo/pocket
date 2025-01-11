@@ -18,7 +18,7 @@ One may look at the code and say it's not great, but I am aware of that fact, an
 <h2>Getting Started</h2>
 <h3>Requirements</h3>
 
-- any operating system (on Windows and Mac you might need to tinker with the source code to make it work)
+- any operating system (you will need to make changes to the source code if on Windows or macOS)
 - GCC (to compile)
 - terminal with ANSI color code support
 
@@ -26,6 +26,8 @@ One may look at the code and say it's not great, but I am aware of that fact, an
 You can only build it from source, I'm not providing any executables.
 
 Use either the provided `make.sh` file, or use `gcc src/*.c -o bin/pocket -Wall -Werror -Wextra -std=c23` (make sure the `bin` directory exists)
+
+Additionally, either move the compiled executable to the `/usr/bin` directory to access it anywhere, or create a symlink from the directory where you compiled it using `ln -s <path_to_executable> /usr/bin/pocket`.
 
 <h3>Commands</h3>
 
