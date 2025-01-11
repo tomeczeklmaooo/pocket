@@ -1,25 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "include/file.h"
 
 // change to whatever
 char global_file[128];
 
-void generate_filename(char* prefix, char* suffix)
+int generate_filename(char* prefix, char* suffix)
 {
 	time_t t = time(NULL);
 	struct tm *local_time = localtime(&t);
+	
+	uid_t uid = getuid();
+	struct passwd *pw = getpwuid(uid);
 
-	snprintf(
-		global_file,
-		sizeof(global_file),
-		"%s%04d%s.txt",
-		prefix,
-		local_time->tm_year + 1900,
-		suffix
-	);
+	if (pw != NULL)
+	{
+		snprintf(
+			global_file,
+			sizeof(global_file),
+			"%s/pocket_data/%s%04d%s.txt",
+			pw->pw_dir,
+			prefix,
+			local_time->tm_year + 1900,
+			suffix
+		);
+	}
+	else
+	{
+		printf("ERROR [generate_filename()]: getpwuid() failed to fetch home directory\n");
+		return 1;
+	}
+
+	return 0;
 }
 
 char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
@@ -28,6 +47,28 @@ char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
 int write_file(char* filename, char* content, int overwrite_content)
 {
 	FILE *fptr;
+
+	uid_t uid = getuid();
+	struct passwd *pw = getpwuid(uid);
+
+	struct stat st;
+	char path[256];
+
+	snprintf(
+		path,
+		sizeof(path),
+		"%s/pocket_data",
+		pw->pw_dir
+	);
+
+	if (stat(path, &st) == -1)
+	{
+		if (mkdir(path, 0755) == -1)
+		{
+			printf("ERROR [write_file()]: Failed to create directory '%s'\n", path);
+			return 1;
+		}
+	}
 
 	switch (overwrite_content)
 	{
@@ -76,7 +117,7 @@ void read_file(char* filename)
 
 			if (i >= MAX_FILE_LINE_AMT)
 			{
-				printf("ERROR: Reached line limit of %d", MAX_FILE_LINE_AMT);
+				printf("ERROR [read_file()]: Reached line limit of %d", MAX_FILE_LINE_AMT);
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 
 extern char global_file[128];
 
-void generate_filename(char* prefix, char* suffix);
+int generate_filename(char* prefix, char* suffix);
 
 // size is hardcoded because idk how to dynamically size arrays lol
 extern char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
