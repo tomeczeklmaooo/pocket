@@ -19,7 +19,7 @@ One may look at the code and say it's not great, but I am aware of that fact, an
 <h3>Requirements</h3>
 
 - any operating system (you will need to make changes to the source code if on Windows or macOS)
-- GCC (to compile)
+- GCC (or any other compiler with C99 support)
 - terminal with ANSI color code support
 
 <h3>Installation / Building</h3>
