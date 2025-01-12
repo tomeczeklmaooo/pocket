@@ -34,7 +34,10 @@ int generate_filename(char* prefix, char* suffix)
 	}
 	else
 	{
-		printf("ERROR [generate_filename()]: getpwuid() failed to fetch home directory\n");
+		printf(
+			"\033[0;31mERROR \033[0m[%s()]: getpwuid() failed to fetch home directory\n",
+			__func__
+		);
 		return 1;
 	}
 
@@ -65,7 +68,11 @@ int write_file(char* filename, char* content, int overwrite_content)
 	{
 		if (mkdir(path, 0755) == -1)
 		{
-			printf("ERROR [write_file()]: Failed to create directory '%s'\n", path);
+			printf(
+				"\033[0;31mERROR \033[0m[%s()]: Failed to create directory '%s'\n",
+				__func__,
+				path
+			);
 			return 1;
 		}
 	}
@@ -79,7 +86,10 @@ int write_file(char* filename, char* content, int overwrite_content)
 			fptr = fopen(filename, "w");
 			break;
 		default:
-			printf("ERROR [write_file()]: Invalid overwrite_content argument value!\n");
+			printf(
+				"\033[0;31mERROR \033[0m[%s()]: Invalid overwrite_content argument value\n",
+				__func__
+			);
 			printf("Expected 0 or 1, actual value: %d\n", overwrite_content);
 			return 1;
 	}
@@ -90,7 +100,11 @@ int write_file(char* filename, char* content, int overwrite_content)
 	}
 	else
 	{
-		printf("ERROR [write_file()]: Unable to open file '%s'\n", filename);
+		printf(
+			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
+			__func__,
+			filename
+		);
 	}
 
 	fclose(fptr);
@@ -117,13 +131,21 @@ void read_file(char* filename)
 
 			if (i >= MAX_FILE_LINE_AMT)
 			{
-				printf("ERROR [read_file()]: Reached line limit of %d", MAX_FILE_LINE_AMT);
+				printf(
+					"\033[0;31mERROR \033[0m[%s()]: Reached line limit of %d",
+					__func__,
+					MAX_FILE_LINE_AMT
+				);
 			}
 		}
 	}
 	else
 	{
-		printf("ERROR [read_file()]: Unable to open file '%s'\n", filename);
+		printf(
+			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
+			__func__,
+			filename
+		);
 	}
 
 	fclose(fptr);
@@ -150,7 +172,11 @@ int get_line_count(char* filename)
 	}
 	else
 	{
-		printf("ERROR [get_line_count()]: Unable to open file '%s'\n", filename);
+		printf(
+			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
+			__func__,
+			filename
+		);
 	}
 
 	fclose(fptr);

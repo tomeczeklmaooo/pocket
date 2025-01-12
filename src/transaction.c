@@ -58,7 +58,11 @@ int get_values_from_array()
 				break;
 			}
 			default:
-				printf("ERROR [get_values_from_array()]: Invalid transaction type in file at line %d!\n", i + 1);
+				printf(
+					"\033[0;31mERROR \033[0m[%s()]: Invalid transaction type in file at line %d!\n",
+					__func__,
+					i + 1
+				);
 				printf("Expected 0 or 1, actual value: %c\n", line_parsed[0][0]);
 				return 1;
 		}

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "include/about.h"
 #include "include/status.h"
@@ -34,10 +35,38 @@ int main(int argc, char **argv)
 			}
 			else if (strcmp(argv[i], "add-inc") == 0)
 			{
+				for (int j = 0; j < (int)strlen(argv[i + 1]); j++)
+				{
+					if (isalpha(argv[i + 1][j]))
+					{
+						printf(
+							"\033[0;31mERROR \033[0m[%s(): %s]: Character '%c' at position %d is not numeric!\n",
+							__func__,
+							argv[i],
+							argv[i + 1][j],
+							j
+						);
+						return 1;
+					}
+				}
 				transaction(global_file, 'I', strtof(argv[i + 1], NULL), argv[i + 2]);
 			}
 			else if (strcmp(argv[i], "add-exp") == 0)
 			{
+				for (int j = 0; j < (int)strlen(argv[i + 1]); j++)
+				{
+					if (isalpha(argv[i + 1][j]))
+					{
+						printf(
+							"\033[0;31mERROR \033[0m[%s(): %s]: Character '%c' at position %d is not numeric!\n",
+							__func__,
+							argv[i],
+							argv[i + 1][j],
+							j
+						);
+						return 1;
+					}
+				}
 				transaction(global_file, 'E', strtof(argv[i + 1], NULL), argv[i + 2]);
 			}
 			else if (strcmp(argv[i], "show") == 0)
