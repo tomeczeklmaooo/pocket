@@ -66,7 +66,11 @@ int get_values_from_array()
 				printf("Expected 0 or 1, actual value: %c\n", line_parsed[0][0]);
 				return 1;
 		}
+
+		free(file_content[i]);
 	}
+
+	free(file_content);
 
 	return 0;
 }

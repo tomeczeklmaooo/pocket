@@ -12,7 +12,7 @@
 // change to whatever
 char global_file[128];
 
-int generate_filename(char* prefix, char* suffix)
+void generate_filename(char* prefix, char* suffix)
 {
 	time_t t = time(NULL);
 	struct tm *local_time = localtime(&t);
@@ -20,34 +20,31 @@ int generate_filename(char* prefix, char* suffix)
 	uid_t uid = getuid();
 	struct passwd *pw = getpwuid(uid);
 
-	if (pw != NULL)
-	{
-		snprintf(
-			global_file,
-			sizeof(global_file),
-			"%s/pocket_data/%s%04d%s.txt",
-			pw->pw_dir,
-			prefix,
-			local_time->tm_year + 1900,
-			suffix
-		);
-	}
-	else
+	if (pw == NULL)
 	{
 		printf(
 			"\033[0;31mERROR \033[0m[%s()]: getpwuid() failed to fetch home directory\n",
 			__func__
 		);
-		return 1;
+		return;
 	}
 
-	return 0;
+	snprintf(
+		global_file,
+		sizeof(global_file),
+		"%s/pocket_data/%s%04d%s.txt",
+		pw->pw_dir,
+		prefix,
+		local_time->tm_year + 1900,
+		suffix
+	);
 }
 
-char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
+char** file_content = NULL;
+int lines_limit = 16;
 
 // write to a file
-int write_file(char* filename, char* content, int overwrite_content)
+void write_file(char* filename, char* content, int overwrite_content)
 {
 	FILE *fptr;
 
@@ -73,7 +70,7 @@ int write_file(char* filename, char* content, int overwrite_content)
 				__func__,
 				path
 			);
-			return 1;
+			return;
 		}
 	}
 
@@ -91,24 +88,22 @@ int write_file(char* filename, char* content, int overwrite_content)
 				__func__
 			);
 			printf("Expected 0 or 1, actual value: %d\n", overwrite_content);
-			return 1;
+			return;
 	}
 
-	if (fptr != NULL)
-	{
-		fprintf(fptr, content);
-	}
-	else
+	if (fptr == NULL)
 	{
 		printf(
 			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
 			__func__,
 			filename
 		);
+		return;
 	}
 
+	fprintf(fptr, content);
+
 	fclose(fptr);
-	return 0;
 }
 
 // read from a file
@@ -120,32 +115,59 @@ void read_file(char* filename)
 
 	fptr = fopen(filename, "r");
 
-	if (fptr != NULL)
-	{
-		int i = 0;
-		while (fgets(file_content[i], sizeof(file_content[i]), fptr))
-		{
-			// removing newline character, don't think this should be used tbh
-			// file_content[i][strcspn(file_content[i], "\n")] = '\0';
-			i++;
-
-			if (i >= MAX_FILE_LINE_AMT)
-			{
-				printf(
-					"\033[0;31mERROR \033[0m[%s()]: Reached line limit of %d",
-					__func__,
-					MAX_FILE_LINE_AMT
-				);
-			}
-		}
-	}
-	else
+	if (fptr == NULL)
 	{
 		printf(
 			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
 			__func__,
 			filename
 		);
+	}
+
+	int i = 0;
+
+	file_content = malloc(lines_limit * sizeof(char*));
+	if (!file_content)
+	{
+		printf(
+			"\033[0;31mERROR \033[0m[%s()]: Failed to allocate memory for file_content\n",
+			__func__
+		);
+		fclose(fptr);
+		return;
+	}
+
+	char line_buffer[128];
+
+	while(fgets(line_buffer, sizeof(line_buffer), fptr))
+	{
+		if (i >= lines_limit)
+		{
+			lines_limit *= 2;
+			char **temp = realloc(file_content, lines_limit * sizeof(char*));
+			if (!temp)
+			{
+				printf(
+					"\033[0;31mERROR \033[0m[%s()]: Failed to reallocate memory for file_content\n",
+					__func__
+				);
+				return;
+			}
+			file_content = temp;
+		}
+
+		file_content[i] = malloc((strlen(line_buffer) + 1) * sizeof(char));
+		if (!file_content[i])
+		{
+			printf(
+				"\033[0;31mERROR \033[0m[%s()]: Failed to allocate memory for line in file_content\n",
+				__func__
+			);
+			return;
+		}
+
+		strcpy(file_content[i], line_buffer);
+		i++;
 	}
 
 	fclose(fptr);
@@ -160,23 +182,22 @@ int get_line_count(char* filename)
 
 	fptr = fopen(filename, "r");
 
-	if (fptr != NULL)
-	{
-		while ((c = fgetc(fptr)) != EOF)
-		{
-			if (c == '\n')
-			{
-				line_count++;
-			}
-		}
-	}
-	else
+	if (fptr == NULL)
 	{
 		printf(
 			"\033[0;31mERROR \033[0m[%s()]: Unable to open file '%s'\n",
 			__func__,
 			filename
 		);
+		return 0;
+	}
+
+	while ((c = fgetc(fptr)) != EOF)
+	{
+		if (c == '\n')
+		{
+			line_count++;
+		}
 	}
 
 	fclose(fptr);

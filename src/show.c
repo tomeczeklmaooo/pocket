@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "include/show.h"
 #include "include/file.h"
@@ -27,6 +28,10 @@ void show()
 			line_parsed[3]
 		);
 
+		free(file_content[i]);
+
 		printf("\n"); // new line at end of each line
 	}
+
+	free(file_content);
 }

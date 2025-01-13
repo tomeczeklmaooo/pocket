@@ -6,12 +6,12 @@
 
 extern char global_file[128];
 
-int generate_filename(char* prefix, char* suffix);
+void generate_filename(char* prefix, char* suffix);
 
-// size is hardcoded because idk how to dynamically size arrays lol
-extern char file_content[MAX_FILE_LINE_AMT][MAX_FILE_LINE_LEN];
+extern char** file_content;
+extern int lines_limit;
 
-int write_file(char* filename, char* content, int overwrite_content);
+void write_file(char* filename, char* content, int overwrite_content);
 void read_file(char* filename);
 int get_line_count(char* filename);
 
