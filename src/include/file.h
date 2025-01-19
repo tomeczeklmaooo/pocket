@@ -1,9 +1,6 @@
 #ifndef FILE_H
 #define FILE_H
 
-#define MAX_FILE_LINE_AMT 16384
-#define MAX_FILE_LINE_LEN 128
-
 extern char global_file[128];
 
 void generate_filename(char* prefix, char* suffix);
