@@ -18,12 +18,12 @@ void status()
 	}
 
 	printf(
-		"Total income sum: %.2f (in %d entries)\n",
+		"Total income sum:\t%.2f (in %d entries)\n",
 		income_sum,
 		income_table_act_size
 	);
 	printf(
-		"Total expense sum: %.2f (in %d entries)\n",
+		"Total expense sum:\t%.2f (in %d entries)\n",
 		expense_sum,
 		expense_table_act_size
 	);
