@@ -101,7 +101,7 @@ void write_file(char* filename, char* content, int overwrite_content)
 		return;
 	}
 
-	fprintf(fptr, content);
+	fprintf(fptr, "%s", content);
 
 	fclose(fptr);
 }
@@ -178,7 +178,7 @@ int get_line_count(char* filename)
 {
 	FILE *fptr;
 	int line_count = 0;
-	char c;
+	int c;
 
 	fptr = fopen(filename, "r");
 
